@@ -1,0 +1,47 @@
+html,
+body {
+    height: 100%;
+    margin: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 10pt;
+}
+
+#dsl_editor {
+    position: absolute;
+    top: 480;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 10pt;
+}
+
+.box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.box .row {
+    border: 0px;
+}
+
+.box .row.header {
+    flex: 0 1 auto;
+}
+
+.box .row.content {
+    flex: 1 1 auto;
+}
+
+.box .row.footer {
+    flex: 0 1 auto;
+}
+
+.svg-container {
+    display: absolute;
+    top: 0;
+    right: 0;
+    bottom: 480;
+    left: 0;
+    overflow: auto;
+}

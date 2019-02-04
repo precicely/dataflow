@@ -1,0 +1,33 @@
+# Python artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# C/C++ extensions
+*.so
+*.o
+*.obj
+*.dll
+
+# IDE
+.idea/
+
+# Distributables
+build/
+dist/
+doc/
+.eggs/
+*.egg-info/
+*.egg
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test artifacts
+.coverage
+coverage/
+*unittests.xml
+*coverage.xml
+.cache/

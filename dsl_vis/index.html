@@ -1,0 +1,73 @@
+<html>
+<head>
+    <title>Dataflow DSL editor</title>
+    <link rel="stylesheet" href="style/editor.css">
+
+    <script src="externals/jquery/jquery-3.2.1.min.js"></script>
+    <script src="externals/ace/ace.js"></script>
+    <script src="externals/d3/d3.v5.min.js"></script>
+    <script src="externals/elk/elk.bundled.js"></script>
+    
+    <script src="script/graph.js"></script>
+    <script src="script/graph_render.js"></script>
+    <script>
+        graph = new Graph();
+        graphRender = new GraphRender();
+        elk = new ELK();
+
+        /// Syntax error callback
+        function error_callback(line, msg) {
+            // Adding source editor annotation for this error
+            dslEditor.session.setAnnotations([
+                {
+                    row: line,
+                    text: msg,
+                    type: 'error'
+                }
+            ]);
+        }
+
+        /// Regenerate the graph view
+        function refreshView() {
+            graph.reset();
+            var dsl = dslEditor.session.getValue();
+            if (graph.parse(dsl, error_callback)) {
+                dslEditor.session.clearAnnotations();
+                elk.layout(graph.elkJson(), {
+                        // Available options: http://www.eclipse.org/elk/reference/options.html
+                        layoutOptions: {
+                            'elk.layered.spacing.nodeNodeBetweenLayers': 30,
+                            'elk.direction': 'RIGHT',
+                            'elk.padding': '[left=16, top=16, right=16, bottom=16]',
+                        }
+                    })
+                    .then(function(g) {
+                        graphRender.clear();
+                        graphRender.draw(g);
+                    });
+            }
+        }
+
+        $(document).ready(function() {
+            graphRender.attach('#dsl_canvas');
+        });
+    </script>
+</head>
+<body>
+    <div id="dsl_canvas" class="svgcontainer"></div>
+    <div id="dsl_editor" class="row content"></div>
+
+    <script>
+        // Source code editor initialization
+        var dslEditor = ace.edit("dsl_editor");
+        dslEditor.setAutoScrollEditorIntoView(true);
+
+        // Other themes can be found here: https://github.com/ajaxorg/ace-builds
+        dslEditor.setTheme("ace/theme/katzenmilch");
+
+        dslEditor.session.on('change', function(delta) {
+            refreshView();
+        });
+    </script>
+</body>
+</html>
